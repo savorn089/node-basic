@@ -4,12 +4,18 @@ const createProduct = async (data) => {
   return await Product.create(data);
 };
 
-const getAllProducts = () => {
-  return Product.findAll({
-    limit: 10,
+const getAllProducts = async (offset, limit) => {
+  const { count, rows } = await Product.findAndCountAll({
+    offset,
+    limit,
     order: [['id', 'DESC']],
     attributes: ['id', 'code', 'name', 'price', 'created_at'],
   });
+  return {
+    products: rows,
+    total: count,
+    totalPages: Math.ceil(count / limit),
+  };
 };
 
 const getProductById = async (id) => {

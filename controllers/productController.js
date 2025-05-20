@@ -14,14 +14,29 @@ const getAllProducts = async (req, res) => {
     const { page = 1, limit = 10 } = req.query;
     const offset = (page - 1) * limit; // Calculate offset for pagination
     const limitValue = parseInt(limit, 10);
-    const products = await productService.getAllProducts();
+    const { products, total, totalPages } = await productService.getAllProducts(offset, limitValue);
+
     res.json({
-      data: products,
-      message: 'Products retrieved successfully',
+      data: {
+        list: products,
+        pagination: {
+          page: parseInt(page, 10),
+          limit: limitValue,
+          total,
+          totalPages,
+        }
+      },
+      message: products.length === 0 ? 'No products found' : 'OK',
       status: 200,
+      error: null,
     });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({
+      data: null,
+      message: 'Error retrieving products',
+      status: 500,
+      error: err.message
+    });
   }
 };
 
@@ -55,7 +70,7 @@ const updateProduct = async (req, res) => {
       error: null,
     });
   } catch (err) {
-    res.status(400).json({ 
+    res.status(400).json({
       error: err.message,
       message: 'Error updating product',
       status: 500,
