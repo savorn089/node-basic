@@ -3,9 +3,19 @@ const productService = require('../services/productService');
 const createProduct = async (req, res) => {
   try {
     const product = await productService.createProduct(req.body);
-    res.status(201).json(product);
+    res.status(201).json({
+      data: product,
+      message: 'Product created successfully',
+      status: 201,
+      error: null,
+    });
   } catch (err) {
-    res.status(400).json({ error: err.message });
+    res.status(400).json({
+      data: null,
+      error: err.message,
+      message: 'Error creating product',
+      status: 400,
+     });
   }
 };
 
@@ -73,7 +83,7 @@ const updateProduct = async (req, res) => {
     res.status(400).json({
       error: err.message,
       message: 'Error updating product',
-      status: 500,
+      status: 400,
     });
   }
 };
@@ -81,29 +91,73 @@ const updateProduct = async (req, res) => {
 const deleteProduct = async (req, res) => {
   try {
     const product = await productService.deleteProduct(req.params.id);
-    if (!product) return res.status(404).json({ message: 'Not found' });
-    res.json({ message: 'Deleted successfully' });
+    if (!product) return res.status(404).json({
+      message: 'Not found',
+      status: 404,
+      error: {},
+    });
+    res.json({
+      message: 'Product deleted successfully',
+      status: 200,
+      error: null,
+    });
+
   } catch (err) {
-    res.status(400).json({ error: err.message });
+    res.status(400).json({
+      error: err.message,
+      message: 'Error deleting product',
+      status: 400,
+    });
   }
 };
 
 const getProductByCode = async (req, res) => {
   try {
     const product = await productService.getProductByCode(req.params.code);
-    if (!product) res.status(404).json({ message: 'Not found' });
-    res.json(product);
+    if (!product) res.status(404).json({
+      data: null,
+      message: 'Not found',
+      status: 404,
+      error: {},
+     });
+    res.json({
+      data: product,
+      message: 'Product retrieved successfully',
+      status: 200,
+      error: null,
+    });
   } catch (err) {
-    res.status(400).json({ error: err.message });
+    res.status(400).json({ 
+      data: null,
+      error: err.message,
+      message: 'Error retrieving product',
+      status: 400,
+     });
   }
 };
+
 const getProductByName = async (req, res) => {
   try {
     const product = await productService.getProductByName(req.params.name);
-    if (!product) res.status(404).json({ message: 'Not found' });
-    res.json(product);
+    if (!product) res.status(404).json({
+      data: null,
+      message: 'Not found',
+      status: 404,
+      error: {},
+     });
+    res.json({
+      data: product,
+      message: 'Product retrieved successfully',
+      status: 200,
+      error: null,
+    });
   } catch (err) {
-    res.status(400).json({ error: err.message });
+    res.status(400).json({ 
+      data: null,
+      error: err.message,
+      message: 'Error retrieving product',
+      status: 400,
+     });
   }
 };
 
@@ -120,7 +174,12 @@ const getProductInactive = async (req, res) => {
       status: 200,
     });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ 
+      data: null,
+      message: 'Error retrieving products',
+      status: 500,
+      error: err.message,
+     });
   }
 };
 

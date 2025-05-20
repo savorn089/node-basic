@@ -1,6 +1,5 @@
 const userService = require('../services/userService');
 
-
 const getAllUsers = async (req, res) => {
   try {
     const { page = 1, limit = 10 } = req.query;
@@ -74,9 +73,9 @@ const createUser = async (req, res) => {
         error: 'Password must be at least 6 characters long'
       });
     }
-  
+
     const user = await userService.createUser(req.body);
-  
+
     res.status(201).json({
       data: user,
       message: 'User created successfully',
@@ -85,12 +84,12 @@ const createUser = async (req, res) => {
     });
   } catch (err) {
     //console.error('Error creating user:', err); // Log the error
-    res.status(400).json({ 
+    res.status(400).json({
       data: null,
       message: 'Error creating user',
       status: 400,
       error: err.message
-     });
+    });
   }
 };
 
@@ -107,19 +106,71 @@ const getUserById = async (req, res) => {
 const updateUser = async (req, res) => {
   try {
     const user = await userService.updateUser(req.params.id, req.body);
-    if (!user) return res.status(404).json({ message: 'Not found' });
-    res.json(user);
+    if (!user) return res.status(404).json({ 
+      data: null,
+      message: 'Not found',
+      status: 404,
+      error: {},
+     });
+    res.json({
+      data: user,
+      message: 'Updated successfully',
+      status: 200,
+      error: null,
+    });
   } catch (err) {
-    res.status(400).json({ error: err.message });
+    res.status(400).json({ 
+      data: null,
+      message: 'Error updating user',
+      status: 400,
+      error: err.message
+     });
   }
 };
 
 const deleteUser = async (req, res) => {
   try {
     await userService.deleteUser(req.params.id);
-    res.json({ message: 'Deleted successfully' });
+    res.json({ 
+      data: null,
+      message: 'Deleted successfully',
+      status: 200,
+      error: null,
+    });
   } catch (err) {
-    res.status(400).json({ error: err.message });
+    res.status(400).json({ 
+      data: null,
+      message: 'Error deleting user',
+      status: 400,
+      error: err.message
+     });
+  }
+};
+
+const getUserByToken = async (req, res) => {
+  try {
+    const userId = req.user.id; // Assuming you have middleware that sets req.user
+    const user = await userService.getUserByToken(userId);
+    if (!user) return res.status(404).json({
+      data: null,
+      message: 'Not found',
+      status: 404,
+      error: {},
+     });
+    res.json(
+      {
+        data: user,
+        message: 'User retrieved successfully',
+        status: 200,
+        error: null,
+      });
+  } catch (err) {
+    res.status(400).json({ 
+      data: null,
+      error: err.message,
+      message: 'Error retrieving user',
+      status: 400,
+     });
   }
 };
 
@@ -129,4 +180,5 @@ module.exports = {
   getUserById,
   updateUser,
   deleteUser,
+  getUserByToken
 };

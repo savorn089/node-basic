@@ -47,6 +47,12 @@ const getUserByName = async (name) => {
   return await User.findOne({ where: { name } });
 };
 
+const getUserByToken = async (userId) => {
+  return await User.findByPk(userId, {
+    attributes: ['id', 'name', 'email', 'updated_at', 'created_at'],
+  });
+}
+
 module.exports = {
   getAllUsers,
   createUser,
@@ -54,5 +60,6 @@ module.exports = {
   updateUser,
   deleteUser,
   getUserByEmail,
-  getUserByName
+  getUserByName,
+  getUserByToken,
 };
