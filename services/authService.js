@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
-const { jwtSecret } = require('../constant');
+const { JWT_SECRET, TOKEN_EXPIRATION } = require('../constant');
 
 const login = async (email, password) => {
   const user = await User.findOne({ where: { email } });
@@ -14,7 +14,7 @@ const login = async (email, password) => {
     return null;
   }
 
-  const token = jwt.sign({ id: user.id, email: user.email }, jwtSecret, { expiresIn: '1h' });
+  const token = jwt.sign({ id: user.id, email: user.email }, JWT_SECRET, { expiresIn: TOKEN_EXPIRATION });
   return token;
 };
 

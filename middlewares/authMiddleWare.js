@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const { JWT_SECRET } = require('../constant');
 
 const verifyToken = (req, res, next) => {
   const authHeader = req.headers.authorization;
@@ -8,7 +9,9 @@ const verifyToken = (req, res, next) => {
     return res.status(401).json({ message: 'No token provided' });
   }
 
-  jwt.verify(token, 'your-secret-key', (err, decoded) => { // Replace 'your-secret-key' with a strong secret
+  console.log('JwtSecret:', JWT_SECRET); // Log the token for debugging
+
+  jwt.verify(token, JWT_SECRET, (err, decoded) => { // Replace 'your-secret-key' with a strong secret
     if (err) {
       return res.status(403).json({ message: 'Invalid token' });
     }

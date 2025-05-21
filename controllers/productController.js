@@ -15,7 +15,7 @@ const createProduct = async (req, res) => {
       error: err.message,
       message: 'Error creating product',
       status: 400,
-     });
+    });
   }
 };
 
