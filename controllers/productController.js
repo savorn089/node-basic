@@ -1,4 +1,5 @@
 const productService = require('../services/productService');
+const { sequelize } = require('../models/index');
 
 const createProduct = async (req, res) => {
   try {
@@ -25,6 +26,15 @@ const getAllProducts = async (req, res) => {
     const offset = (page - 1) * limit; // Calculate offset for pagination
     const limitValue = parseInt(limit, 10);
     const { products, total, totalPages } = await productService.getAllProducts(offset, limitValue);
+
+    /*
+
+    const currencyData = await sequelize.query('SELECT * FROM currency', {
+      type: sequelize.QueryTypes.SELECT,
+    });
+    console.log('currencyData', currencyData);
+
+    */
 
     res.json({
       data: {
@@ -119,7 +129,7 @@ const getProductByCode = async (req, res) => {
       message: 'Not found',
       status: 404,
       error: {},
-     });
+    });
     res.json({
       data: product,
       message: 'Product retrieved successfully',
@@ -127,12 +137,12 @@ const getProductByCode = async (req, res) => {
       error: null,
     });
   } catch (err) {
-    res.status(400).json({ 
+    res.status(400).json({
       data: null,
       error: err.message,
       message: 'Error retrieving product',
       status: 400,
-     });
+    });
   }
 };
 
@@ -144,7 +154,7 @@ const getProductByName = async (req, res) => {
       message: 'Not found',
       status: 404,
       error: {},
-     });
+    });
     res.json({
       data: product,
       message: 'Product retrieved successfully',
@@ -152,12 +162,12 @@ const getProductByName = async (req, res) => {
       error: null,
     });
   } catch (err) {
-    res.status(400).json({ 
+    res.status(400).json({
       data: null,
       error: err.message,
       message: 'Error retrieving product',
       status: 400,
-     });
+    });
   }
 };
 
@@ -174,12 +184,12 @@ const getProductInactive = async (req, res) => {
       status: 200,
     });
   } catch (err) {
-    res.status(500).json({ 
+    res.status(500).json({
       data: null,
       message: 'Error retrieving products',
       status: 500,
       error: err.message,
-     });
+    });
   }
 };
 

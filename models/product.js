@@ -19,7 +19,15 @@ const Product = sequelize.define('products', {
   price: {
     type: DataTypes.FLOAT,
     allowNull: false
-  }
+  },
+  name_price: {
+    type: DataTypes.VIRTUAL,
+    get() {
+      //return `${this.name} - ${this.price}`;
+      return this.name + ' - ' + this.price;
+    },
+
+  },
 }, {
   timestamps: true,
   createdAt: 'created_at',

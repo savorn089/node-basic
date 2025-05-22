@@ -1,15 +1,19 @@
 const Product = require('../models/product');
+const { Op } = require('sequelize');
 
 const createProduct = async (data) => {
   return await Product.create(data);
 };
+
+
+const fields = ['id', 'code', 'name', 'price', 'name_price', 'created_at'];
 
 const getAllProducts = async (offset, limit) => {
   const { count, rows } = await Product.findAndCountAll({
     offset,
     limit,
     order: [['id', 'DESC']],
-    attributes: ['id', 'code', 'name', 'price', 'created_at'],
+    attributes: fields,
   });
   return {
     products: rows,
@@ -19,7 +23,14 @@ const getAllProducts = async (offset, limit) => {
 };
 
 const getProductById = async (id) => {
-  return await Product.findByPk(id);
+  // return await Product.findByPk(id, {
+  //   attributes: fields,
+  // });
+
+  return await Product.findOne({
+    where: { id },
+    attributes: fields,
+  });
 };
 
 const updateProduct1 = async (id, data) => {
