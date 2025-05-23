@@ -18,7 +18,7 @@ const getAllUsers = async (offset, limit) => {
 const createUser = async (data) => {
   const salt = await bcrypt.genSalt(10);
   const hashedPassword = await bcrypt.hash(data.password, salt);
-  const user = await User.create({ ...data, password: hashedPassword });
+  const user = await User.create({ ...data, password: hashedPassword, profilePicture: data.profilePicture });
   return user;
 };
 

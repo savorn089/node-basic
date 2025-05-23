@@ -1,4 +1,5 @@
 const userService = require('../services/userService');
+const upload = require('../middlewares/uploadMiddleware');
 
 const getAllUsers = async (req, res) => {
   try {
@@ -74,13 +75,22 @@ const createUser = async (req, res) => {
       });
     }
 
-    const user = await userService.createUser(req.body);
+    upload.single('profilePicture')(req, res, async (err) => {
+      if (err) {
+        console.error('Multer error:', err);
+        return res.status(400).json({ message: 'File upload failed' });
+      }
 
-    res.status(201).json({
-      data: user,
-      message: 'User created successfully',
-      status: 201,
-      error: null,
+      const profilePicturePath = req.file ? req.file.path : null;
+      const userData = { ...req.body, profilePicture: profilePicturePath };
+      const user = await userService.createUser(userData);
+
+      res.status(201).json({
+        data: user,
+        message: 'User created successfully',
+        status: 201,
+        error: null,
+      });
     });
   } catch (err) {
     //console.error('Error creating user:', err); // Log the error
@@ -174,11 +184,50 @@ const getUserByToken = async (req, res) => {
   }
 };
 
+const updateProfilePicture = async (req, res) => {
+  try {
+    const userId = req.user.id; // Assuming you have middleware that sets req.user
+    if (!userId) {
+      return res.status(401).json({ message: 'Unauthorized' });
+    }
+
+    // 'profilePicture' is the field name in the form data
+    upload.single('profilePicture')(req, res, async (err) => {
+      if (err) {
+        console.error('Multer error:', err);
+        return res.status(400).json({ message: 'File upload failed' });
+      }
+
+      if (!req.file) {
+        return res.status(400).json({ message: 'No file uploaded' });
+      }
+
+      const user = await userService.getUserById(userId);
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+
+      // Update the user's profile picture
+      user.profilePicture = req.file.path; // Assuming you want to store the file path
+      await user.save();
+
+      res.status(200).json({
+        message: 'Profile picture updated successfully',
+        profilePicture: req.file.path,
+      });
+    });
+  } catch (err) {
+    console.error('Error updating profile picture:', err);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
 module.exports = {
   getAllUsers,
   createUser,
   getUserById,
   updateUser,
   deleteUser,
-  getUserByToken
+  getUserByToken,
+  updateProfilePicture
 };

@@ -10,5 +10,6 @@ router.get('/:id', verifyToken, userController.getUserById);
 router.put('/:id', verifyToken, userController.updateUser);
 router.delete('/:id', verifyToken, userController.deleteUser);
 router.get('/me', verifyToken, userController.getUserByToken);
+router.put('/me/profile-picture', verifyToken, userController.updateProfilePicture);
 
 module.exports = router;

@@ -20,6 +20,10 @@ const User = sequelize.define('users', {
     allowNull: false,
   },
   // Add other user-related fields as needed
+  profilePicture: {
+    type: DataTypes.STRING,
+    allowNull: true, // Or false, depending on your requirements
+  },
 }, {
   timestamps: true,
   createdAt: 'created_at',
