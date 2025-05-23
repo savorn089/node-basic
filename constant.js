@@ -9,7 +9,7 @@ const getEnv = (key) => {
   return value;
 };
 
-const JWT_SECRET = getEnv('JWT_SECRET') || 'your-secret-key';
+const JWT_SECRET = getEnv('JWT_SECRET');
 const PORT = getEnv('PORT') || 3000;
 const TOKEN_EXPIRATION = getEnv('TOKEN_EXPIRATION') || '1h';
 const DB_HOST = getEnv('DB_HOST');
