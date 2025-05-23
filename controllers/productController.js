@@ -1,5 +1,5 @@
 const productService = require('../services/productService');
-const { sequelize } = require('../models/index');
+// const { sequelize } = require('../models/index');
 
 const createProduct = async (req, res) => {
   try {
@@ -172,27 +172,6 @@ const getProductByName = async (req, res) => {
 };
 
 
-const getProductInactive = async (req, res) => {
-  try {
-    const { page = 1, limit = 10 } = req.query;
-    const offset = (page - 1) * limit; // Calculate offset for pagination
-    const limitValue = parseInt(limit, 10);
-    const products = await productService.getAllProducts();
-    res.json({
-      data: products,
-      message: 'Products retrieved successfully',
-      status: 200,
-    });
-  } catch (err) {
-    res.status(500).json({
-      data: null,
-      message: 'Error retrieving products',
-      status: 500,
-      error: err.message,
-    });
-  }
-};
-
 const showProduct = async (req, res) => {
   try {
     const product = await productService.getProductById(req.params.id);
@@ -221,6 +200,5 @@ module.exports = {
   deleteProduct,
   getProductByCode,
   getProductByName,
-  getProductInactive,
   showProduct,
 };

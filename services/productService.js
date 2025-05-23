@@ -1,5 +1,5 @@
 const Product = require('../models/product');
-const { Op } = require('sequelize');
+// const { Op } = require('sequelize');
 
 const createProduct = async (data) => {
   return await Product.create(data);
@@ -33,11 +33,11 @@ const getProductById = async (id) => {
   });
 };
 
-const updateProduct1 = async (id, data) => {
-  const product = await Product.findByPk(id);
-  if (!product) return null;
-  return await product.update(data);
-};
+// const updateProduct1 = async (id, data) => {
+//   const product = await Product.findByPk(id);
+//   if (!product) return null;
+//   return await product.update(data);
+// };
 
 const updateProduct = async (id, data) =>
   Product.findByPk(id).then((product) => {

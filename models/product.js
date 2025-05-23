@@ -23,10 +23,8 @@ const Product = sequelize.define('products', {
   name_price: {
     type: DataTypes.VIRTUAL,
     get() {
-      //return `${this.name} - ${this.price}`;
-      return this.name + ' - ' + this.price;
+      return this.name ? this.name.toUpperCase() : null;
     },
-
   },
 }, {
   timestamps: true,

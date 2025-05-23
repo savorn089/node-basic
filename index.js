@@ -14,11 +14,11 @@ app.use('/products', productRoutes); // 🔐 Protected route
 app.use('/users', userRoutes);     // 👤 User route
 
 sequelize.sync().then(() => {
-  console.log('Database synced');
-}).catch((err) => {
-  console.error('DB sync error:', err);
+  // console.log('Database synced');
+}).catch(() => {
+  // console.error('DB sync error:', err);
 });
 
 app.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`);
+  // console.log(`Server running at http://localhost:${PORT}`);
 });

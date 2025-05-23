@@ -7,12 +7,12 @@ const paginate = async (model, page, limit, options = {}) => {
     attributes: options.attributes,
   });
 
-  console.log('Paginate function called with options:', {
-    page,
-    limit,
-    count,
-    rows,
-  });
+  // console.log('Paginate function called with options:', {
+  //   page,
+  //   limit,
+  //   count,
+  //   rows,
+  // });
 
   return {
     data: rows,

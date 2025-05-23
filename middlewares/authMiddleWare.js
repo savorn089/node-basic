@@ -9,7 +9,7 @@ const verifyToken = (req, res, next) => {
     return res.status(401).json({ message: 'No token provided' });
   }
 
-  console.log('JwtSecret:', JWT_SECRET); // Log the token for debugging
+  // console.log('JwtSecret:', JWT_SECRET); // Log the token for debugging
 
   jwt.verify(token, JWT_SECRET, (err, decoded) => { // Replace 'your-secret-key' with a strong secret
     if (err) {

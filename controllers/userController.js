@@ -34,7 +34,7 @@ const getAllUsers = async (req, res) => {
 const createUser = async (req, res) => {
   try {
 
-    console.log('Request body:', req.body); // Log the request body
+    //console.log('Request body:', req.body); // Log the request body
 
     const existingUserByEmail = await userService.getUserByEmail(req.body.email);
     if (existingUserByEmail) {
