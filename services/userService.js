@@ -1,12 +1,13 @@
 const User = require('../models/user');
 const bcrypt = require('bcrypt');
 
+const fields = ['id', 'name', 'email', 'updated_at', 'created_at'];
 const getAllUsers = async (offset, limit) => {
   const { count, rows } = await User.findAndCountAll({
     offset,
     limit,
     order: [['id', 'DESC']],
-    attributes: ['id', 'name', 'email', 'updated_at', 'created_at'],
+    attributes: fields,
   });
   return {
     users: rows,
@@ -23,7 +24,9 @@ const createUser = async (data) => {
 };
 
 const getUserById = async (id) => {
-  return await User.findByPk(id);
+  return await User.findByPk(id, {
+    attributes: fields,
+  });
 };
 
 const updateUser = async (id, data) => {
@@ -40,16 +43,20 @@ const deleteUser = async (id) => {
 };
 
 const getUserByEmail = async (email) => {
-  return await User.findOne({ where: { email } });
+  return await User.findOne({ where: { email } }, {
+    attributes: fields,
+  });
 };
 
 const getUserByName = async (name) => {
-  return await User.findOne({ where: { name } });
+  return await User.findOne({ where: { name } }, {
+    attributes: fields,
+  });
 };
 
 const getUserByToken = async (userId) => {
   return await User.findByPk(userId, {
-    attributes: ['id', 'name', 'email', 'updated_at', 'created_at'],
+    attributes: fields,
   });
 }
 
