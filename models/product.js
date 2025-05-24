@@ -20,6 +20,10 @@ const Product = sequelize.define('products', {
     type: DataTypes.FLOAT,
     allowNull: false
   },
+  cost: {
+    type: DataTypes.DECIMAL(10, 2),
+    allowNull: true,
+  },
   name_price: {
     type: DataTypes.VIRTUAL,
     get() {

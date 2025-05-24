@@ -1,6 +1,6 @@
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('./index'); // Assuming you have an index.js for Sequelize configuration
-
+const AccessToken = require('./accessToken'); // Adjust the path as necessary
 const User = sequelize.define('users', {
   id: {
     type: DataTypes.INTEGER,
@@ -20,7 +20,7 @@ const User = sequelize.define('users', {
     allowNull: false,
   },
   // Add other user-related fields as needed
-  profilePicture: {
+  profile_picture: {
     type: DataTypes.STRING,
     allowNull: true, // Or false, depending on your requirements
   },
@@ -31,3 +31,6 @@ const User = sequelize.define('users', {
 });
 
 module.exports = User;
+
+//User.hasMany(AccessToken, { foreignKey: 'userId', as: 'accessTokens' });
+//AccessToken.belongsTo(User, { foreignKey: 'userId', as: 'user' });
