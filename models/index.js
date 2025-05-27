@@ -1,11 +1,11 @@
 const { Sequelize } = require('sequelize');
-const { 
+const {
   DB_NAME,
   DB_USER,
   DB_PASSWORD,
   DB_HOST,
   // DB_PORT,
- } = require('../constant');
+} = require('../constant');
 
 
 // Set up Sequelize connection
@@ -29,7 +29,7 @@ const sequelize = new Sequelize(
 const testConnection = async () => {
   try {
     await sequelize.authenticate();
-    // console.log('Connection to the database has been established successfully.');
+    console.log('Connection to the database has been established successfully.');
   } catch (error) {
     console.error('Unable to connect to the database:', error);
   }

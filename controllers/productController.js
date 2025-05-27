@@ -13,15 +13,19 @@ const createProduct = async (req, res) => {
   } catch (err) {
     res.status(400).json({
       data: null,
-      error: err.message,
       message: 'Error creating product',
       status: 400,
+      error: err.message,
     });
   }
 };
 
 const getAllProducts = async (req, res) => {
   try {
+
+    const user = req.user;
+
+    console.log('user ===', user);
     const { page = 1, limit = 10 } = req.query;
     const offset = (page - 1) * limit; // Calculate offset for pagination
     const limitValue = parseInt(limit, 10);

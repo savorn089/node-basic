@@ -1,5 +1,5 @@
 const authService = require('../services/authService');
-const AccessToken  = require('../models/accessToken');
+const AccessToken = require('../models/accessToken');
 const User = require('../models/user');
 const jwt = require('jsonwebtoken');
 const { JWT_SECRET } = require('../constant');
@@ -13,7 +13,7 @@ const login = async (req, res) => {
         message: 'Invalid email or password',
         status: 401,
         error: 'Invalid email or password',
-       });
+      });
     }
 
     // Set the token in a cookie
@@ -38,15 +38,19 @@ const login = async (req, res) => {
 
 const logout = async (req, res) => {
   try {
-    const token = req.cookies.accessToken;
-    if (!token) {
-      return res.status(200).json({ message: 'Logout successful' }); // Already logged out
-    }
+    // const token = req.headers.authorization?.split(' ')[1];
+    const { user } = req; // Assuming user is set by auth middleware
+    const userId = user ? user.id : 0;
 
-    const decoded = jwt.verify(token, JWT_SECRET);
-    await AccessToken.destroy({ where: { token, userId: decoded.id } });
+    console.log('Logout request received for user:', userId);
 
-    res.clearCookie('accessToken');
+    // if (!token) {
+    //   return res.status(200).json({ message: 'Logout successful' }); // Already logged out
+    // }
+
+    // const decoded = jwt.verify(token, JWT_SECRET);
+    await AccessToken.destroy({ where: { userId } });
+
     res.status(200).json({ message: 'Logout successful' });
   } catch (err) {
     res.status(500).json({ error: err.message });
