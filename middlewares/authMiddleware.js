@@ -13,12 +13,13 @@ const verifyToken = async (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, JWT_SECRET);
-    const accessToken = await AccessToken.findOne({ where: { token, userId: decoded.id } });
+    const userId = decoded.id;
+    const accessToken = await AccessToken.findOne({ where: { token, userId } });
     if (!accessToken) {
       return res.status(403).json({ message: 'Invalid token' });
     }
 
-    const user = await User.findByPk(decoded.id);
+    const user = await User.findByPk(userId);
     if (!user) {
       return res.status(403).json({ message: 'User not found' });
     }
